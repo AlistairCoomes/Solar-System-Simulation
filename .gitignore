@@ -4,17 +4,10 @@
 # Compiled Object files
 *.slo
 *.lo
-*.o
-*.obj
 
 # Precompiled Headers
 *.gch
 *.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -23,10 +16,84 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
-*.lib
 
-# Executables
+
+# ==========================================
+# Build Directories & CMake Artifacts
+# ==========================================
+build/
+out/
+bin/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+*.cmake.in
+
+# ==========================================
+# C++ Compiled Executables & Intermediate Files
+# ==========================================
 *.exe
 *.out
 *.app
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.exp
+
+# ==========================================
+# Visual Studio & Windows Debug Files
+# ==========================================
+.vs/
+*.user
+*.suo
+*.userosv
+*.sln.docstates
+*.pdb
+*.ilk
+*.idb
+*.ipch
+*.pch
+*.sdf
+*.opensdf
+
+# ==========================================
+# VS Code
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+# (If using CMake Tools extension, ignore local config overrides)
+.vscode/cmake-variants.json
+
+# ==========================================
+# macOS System & Xcode Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.LSOverride
+.AppleDouble
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+*.pbxuser
+
+# ==========================================
+# Common Editor Temp Files
+# ==========================================
+*.swp
+*~
+*.bak
