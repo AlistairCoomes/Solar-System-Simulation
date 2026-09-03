@@ -27,3 +27,10 @@ elseif (APPLE)
     find_package(OpenGL REQUIRED)
     target_link_libraries(SolarSystem PRIVATE glfw OpenGL::GL "-framework Cocoa" "-framework IOKit")
 endif()
+
+add_custom_command(
+    TARGET SolarSystem POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/ShaderSources"
+        "$<TARGET_FILE_DIR:SolarSystem>/ShaderSources"
+)
