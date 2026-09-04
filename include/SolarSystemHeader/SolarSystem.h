@@ -1,7 +1,6 @@
 #ifndef SOLARSYSTEM_H
 #define SOLARSYSTEM_H
 
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -187,10 +186,10 @@ private:
 
 glm::vec3 sphericalToCartesian(glm::vec3 pos);
 
-glm::vec3 gravity(Body A, Body B); // B -> A vector Direction, cartesian vector
+glm::vec3 gravity(Body A, Body B); // B -> A vector Direction, cartesian vector, gets the gravitational attraction of A on B 
 
 void updatePositions(std::vector<Body> bodies, float DeltaTime);
 
-void updateGravity(std::vector<Body> bodies);
+void updateGravity(Body A, Body B);
 
 #endif SOLARSYSTEM_H

@@ -17,7 +17,7 @@ int main(){
     Engine engine(800,600,"Solar System Simulation", glm::vec3(0.0f,0.0f,3.0f));
     engine.Init();
 
-    /*
+    
     std::vector<Body> bodies;
     std::vector<Shader> shaders;
 
@@ -31,10 +31,9 @@ int main(){
     // Earth[1]
     bodies.emplace_back(glm::vec3(1.0f,0.0f,0.0f),glm::vec3(0.0f,0.0f,0.0f), 0.000003f, 0.05f); // (0,6.28,0)
     shaders.emplace_back("ShaderSources/shader.vs","ShaderSources/EarthShader.fs");
-    */
     
-    Body Sun(glm::vec3(0.0f), glm::vec3(0.0f), 1.0f, 0.2f);
-    Shader SunShader("ShaderSources/shader.vs","ShaderSources/SunShader.fs");
+    bodies[Earth].Acceleration = glm::vec3(-0.1f,0.0f,0.0f);
+
 
     while(!engine.shouldClose()){
         engine.beginFrame();
@@ -43,21 +42,17 @@ int main(){
         glm::mat4 viewProjection = engine.ViewProjection();
         float deltaTime = engine.getDeltaTime();
 
-
-        Sun.DrawBody(SunShader.ID,viewProjection);
-
-
-        /*
+        
         for(unsigned int i=0; i<bodies.size();i++){
             bodies[i].DrawBody(shaders[i].ID, viewProjection);
         }
+        /*
+        updateGravity(bodies[Sun], bodies[Earth]);
         
-        updateGravity(bodies);
-
         for(unsigned int j=1;j<bodies.size();j++){
             bodies[j].updateBodyPosition(deltaTime);
         }
-            */
+        */
 
         //updatePositions(bodies, deltaTime);
         //glm::vec3 gravacc = gravity(bodies[Sun], bodies[Earth]);

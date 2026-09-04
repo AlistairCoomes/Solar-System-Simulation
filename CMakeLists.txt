@@ -16,6 +16,8 @@ add_executable(SolarSystem
     include/SolarSystemHeader/SolarSystem.cpp
 )
 
+add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
+
 # Platform-specific dependency linking
 if (WIN32)
     # Windows linking

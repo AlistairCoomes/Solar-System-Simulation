@@ -130,9 +130,10 @@ glm::vec3 Body::CartToSphPosition(const glm::vec3 &cartesian){
 }
 
 
-glm::vec3 gravity(Body A, Body B){
+glm::vec3 gravity(Body A, Body B){ 
     float squaredDist = glm::distance2(A.Position, B.Position);
-    float g = (G*A.mass*B.mass) / squaredDist;
+    if (squaredDist < 0.0001f) return glm::vec3(0.0f);
+    float g = (G*A.mass) / squaredDist;
     glm::vec3 vector = glm::normalize(A.Position - B.Position);
     return g*vector;
 }
@@ -144,10 +145,8 @@ void updatePositions(std::vector<Body> bodies, float DeltaTime){
     bodies[1].Position += bodies[1].Velocity * DeltaTime;
 }
 
-void updateGravity(std::vector<Body> bodies){
-    for(unsigned int i=1;i<bodies.size();i++){
-        bodies[i].Acceleration = gravity(bodies[0],bodies[i]);
-    }
+void updateGravity(Body A, Body B){
+    B.Acceleration = gravity(A, B);
 }
 
 
@@ -525,7 +524,7 @@ void Camera::ProcessMouseScroll(float yoffset)
         Zoom = 45.0f;
 }
 
-  void Camera::updateCameraVectors()
+void Camera::updateCameraVectors()
 {
     // calculate the new Front vector
     glm::vec3 front;
