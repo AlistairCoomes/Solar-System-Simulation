@@ -14,7 +14,7 @@ glm::vec3 sphericalToCartesian(glm::vec3 pos){
 
 
 
-Body::Body(glm::vec3 position, glm::vec3 velocity, float mass, float radius) : modelMatrix(glm::mat4(1.0f)), Position(position), Velocity(velocity), mass(mass), radius(radius){
+Body::Body(glm::vec3 position, float mass, float radius) : modelMatrix(glm::mat4(1.0f)), Position(position), mass(mass), radius(radius){
 
     int rings = 16;
     int sectors = 32;
@@ -146,7 +146,18 @@ void updatePositions(std::vector<Body> bodies, float DeltaTime){
 }
 
 void updateGravity(Body& A, Body& B){
+    A.Acceleration = gravity(B, A);
     B.Acceleration = gravity(A, B);
+}
+
+glm::vec3 initalVelocity(Body& A, Body& B){
+    float dist = glm::distance(A.Position, B.Position);
+    glm::vec3 up = glm::vec3(0.0f,1.0f,0.0f);
+    glm::vec3 gravVector = A.Position - B.Position;
+    glm::vec3 perpVec = glm::cross(up,gravVector);
+    perpVec = glm::normalize(perpVec);
+    float velocity = std::sqrt((G*A.mass)/dist);
+    return velocity * perpVec;
 }
 
 

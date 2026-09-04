@@ -41,7 +41,7 @@ class Body{
 
 
     // constructor
-    Body(glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f), glm::vec3 velocity = glm::vec3(0.0f,0.0f,0.0f), float mass = 0.0f, float radius=1.0f);
+    Body(glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f), float mass = 0.0f, float radius=1.0f);
 
     // destructor
     ~Body();
@@ -191,5 +191,7 @@ glm::vec3 gravity(Body& A, Body& B); // B -> A vector Direction, cartesian vecto
 void updatePositions(std::vector<Body> bodies, float DeltaTime);
 
 void updateGravity(Body& A, Body& B);
+
+glm::vec3 initalVelocity(Body& A, Body& B); // creates a velocity orthogonal to gravitational attraction from sun A = Sun
 
 #endif SOLARSYSTEM_H
