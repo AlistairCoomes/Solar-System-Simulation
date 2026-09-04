@@ -14,7 +14,7 @@ glm::vec3 sphericalToCartesian(glm::vec3 pos){
 
 
 
-Body::Body(glm::vec3 position, float mass, float radius) : modelMatrix(glm::mat4(1.0f)), Position(position), mass(mass), radius(radius){
+Body::Body(glm::vec3 position, double mass, float radius) : modelMatrix(glm::mat4(1.0f)), Position(position), mass(mass), radius(radius){
 
     int rings = 16;
     int sectors = 32;
@@ -60,7 +60,29 @@ Body::Body(glm::vec3 position, float mass, float radius) : modelMatrix(glm::mat4
     }
     indexCount = indices.size();
     
+  
+    if(position.x > 5.0f){
+            LineSegments = 200;
+        }
     
+    for (int i = 0; i < LineSegments; ++i) {
+        float angle = (2.0f * PI * i) / LineSegments;
+        ringPoints.push_back(glm::vec3(position.x, PI/2.0f, angle));
+    }
+    
+    // Ring buffers
+    glGenVertexArrays(1, &VAO_Line);
+    glGenBuffers(1, &VBO_Line);
+
+    glBindVertexArray(VAO_Line);
+    glBindBuffer(GL_ARRAY_BUFFER,VBO_Line);
+    glBufferData(GL_ARRAY_BUFFER, ringPoints.size()*sizeof(glm::vec3), &ringPoints[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glEnableVertexAttribArray(0); 
+
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+
     // Generate Buffers
     glGenVertexArrays(1, &VAO_body);
     glGenBuffers(1, &VBO_body);
@@ -75,18 +97,22 @@ Body::Body(glm::vec3 position, float mass, float radius) : modelMatrix(glm::mat4
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
     // Position Attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,sizeof(glm::vec3), (void*)0); 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0); 
     glEnableVertexAttribArray(0); 
 
     // Unbind
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
+
 }
+
 
 Body::~Body(){
     glDeleteVertexArrays(1, &VAO_body);
     glDeleteBuffers(1,&VBO_body);
     glDeleteBuffers(1,&EBO_body);
+    glDeleteVertexArrays(1, &VAO_Line);
+    glDeleteBuffers(1,&VBO_Line);
 }
 
 
@@ -105,11 +131,28 @@ void Body::DrawBody(unsigned int ShaderProgram, const glm::mat4& ViewProjection)
 
     glBindVertexArray(VAO_body);
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
-
     glBindVertexArray(0);
 
+    Shader LineShader("ShaderSources/shader.vs","ShaderSources/FragmentShaders/lineShader.fs");
 
+    glUseProgram(LineShader.ID);
+
+    modelMatrix = glm::mat4(1.0f);
+
+    modelLoc = glGetUniformLocation(LineShader.ID, "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix[0][0]);
+
+    VPLoc = glGetUniformLocation(LineShader.ID, "viewProjection");
+    glUniformMatrix4fv(VPLoc, 1, GL_FALSE, &ViewProjection[0][0]);
+
+    glLineWidth(0.2f);
+
+    glBindVertexArray(VAO_Line);
+    glDrawArrays(GL_LINE_LOOP, 0, LineSegments);
+    glBindVertexArray(0);
 }
+
+
 
 void Body::updateBodyPosition(float deltaTime){
     Velocity += Acceleration * deltaTime;
@@ -128,6 +171,58 @@ glm::vec3 Body::CartToSphPosition(const glm::vec3 &cartesian){
 
     return glm::vec3(r,theta,phi);
 }
+
+/*
+void DrawRings(const glm::mat4& ViewProjection, std::vector<Body>& bodies){
+
+    Shader LineShader("ShaderSources/shader.vs","ShaderSources/FragmentShaders/lineShader.fs");
+
+    unsigned int VBO_Line, VAO_Line;
+    int LineSegments = 100;
+
+
+    for(int i=1; i<bodies.size();i++){
+        if(bodies[i].Position.x > 5.0f){
+            LineSegments = 200;
+        }
+        
+        for (int i = 0; i < LineSegments; ++i) {
+            float angle = (2.0f * PI * i) / LineSegments;
+            bodies[i].ringPoints.push_back(glm::vec3(bodies[i].Position.x, PI/2.0f, angle));
+        }
+
+        glGenVertexArrays(1, &VAO_Line);
+        glGenBuffers(1, &VBO_Line);
+
+        glBindVertexArray(VAO_Line);
+        glBindBuffer(GL_ARRAY_BUFFER,VBO_Line);
+        glBufferData(GL_ARRAY_BUFFER, ringPoints.size()*sizeof(glm::vec3), &ringPoints[0],GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+        glEnableVertexAttribArray(0); 
+
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindVertexArray(0);
+
+        glUseProgram(LineShader.ID);
+
+        glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
+
+        unsigned int modelLoc = glGetUniformLocation(LineShader.ID, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix[0][0]);
+
+        unsigned int VPLoc = glGetUniformLocation(LineShader.ID, "viewProjection");
+        glUniformMatrix4fv(VPLoc, 1, GL_FALSE, &ViewProjection[0][0]);
+
+        glBindVertexArray(VAO_Line);
+        glDrawArrays(GL_LINE_LOOP, 0, LineSegments);
+        glBindVertexArray(0);
+
+
+        glDeleteVertexArrays(1, &VAO_Line);
+        glDeleteBuffers(1,&VBO_Line);
+    }
+}
+*/
 
 
 glm::vec3 gravity(Body& A, Body& B){ 

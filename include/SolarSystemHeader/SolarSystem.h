@@ -29,19 +29,24 @@ const float ZOOM        =  45.0f;
 class Body{
     public:
     glm::mat4 modelMatrix;
+    std::vector<glm::vec3> ringPoints;
 
     glm::vec3 Position = glm::vec3(0.0f);
     glm::vec3 Velocity = glm::vec3(0.0f);
     glm::vec3 Acceleration = glm::vec3(0.0f);
-    float mass, radius;
+    double mass; 
+    float radius;
 
 
     unsigned int VBO_body, VAO_body, EBO_body;
     unsigned int indexCount = 0;
 
+    unsigned int VBO_Line, VAO_Line;
+    int LineSegments = 100;
+
 
     // constructor
-    Body(glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f), float mass = 0.0f, float radius=1.0f);
+    Body(glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f), double mass = 0.0, float radius=1.0f);
 
     // destructor
     ~Body();
@@ -193,5 +198,7 @@ void updatePositions(std::vector<Body> bodies, float DeltaTime);
 void updateGravity(Body& A, Body& B);
 
 glm::vec3 initalVelocity(Body& A, Body& B); // creates a velocity orthogonal to gravitational attraction from sun A = Sun
+
+//void DrawRings(const glm::mat4& viewProjection, std::vector<Body>& bodies);
 
 #endif SOLARSYSTEM_H
