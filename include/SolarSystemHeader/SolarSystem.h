@@ -186,10 +186,10 @@ private:
 
 glm::vec3 sphericalToCartesian(glm::vec3 pos);
 
-glm::vec3 gravity(Body A, Body B); // B -> A vector Direction, cartesian vector, gets the gravitational attraction of A on B 
+glm::vec3 gravity(Body& A, Body& B); // B -> A vector Direction, cartesian vector, gets the gravitational attraction of A on B 
 
 void updatePositions(std::vector<Body> bodies, float DeltaTime);
 
-void updateGravity(Body A, Body B);
+void updateGravity(Body& A, Body& B);
 
 #endif SOLARSYSTEM_H

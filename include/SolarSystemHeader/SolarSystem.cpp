@@ -130,7 +130,7 @@ glm::vec3 Body::CartToSphPosition(const glm::vec3 &cartesian){
 }
 
 
-glm::vec3 gravity(Body A, Body B){ 
+glm::vec3 gravity(Body& A, Body& B){ 
     float squaredDist = glm::distance2(A.Position, B.Position);
     if (squaredDist < 0.0001f) return glm::vec3(0.0f);
     float g = (G*A.mass) / squaredDist;
@@ -145,7 +145,7 @@ void updatePositions(std::vector<Body> bodies, float DeltaTime){
     bodies[1].Position += bodies[1].Velocity * DeltaTime;
 }
 
-void updateGravity(Body A, Body B){
+void updateGravity(Body& A, Body& B){
     B.Acceleration = gravity(A, B);
 }
 
