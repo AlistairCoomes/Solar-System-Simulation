@@ -59,6 +59,8 @@ class Body{
 
     void updateBodyPosition(float deltaTime);
 
+    
+
     private:
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
@@ -193,12 +195,11 @@ glm::vec3 sphericalToCartesian(glm::vec3 pos);
 
 glm::vec3 gravity(Body& A, Body& B); // B -> A vector Direction, cartesian vector, gets the gravitational attraction of A on B 
 
-void updatePositions(std::vector<Body> bodies, float DeltaTime);
-
 void updateGravity(Body& A, Body& B);
 
 glm::vec3 initalVelocity(Body& A, Body& B); // creates a velocity orthogonal to gravitational attraction from sun A = Sun
 
-//void DrawRings(const glm::mat4& viewProjection, std::vector<Body>& bodies);
+void VerletIntegration(std::vector<Body>& bodies, float deltaTime);
+
 
 #endif SOLARSYSTEM_H
