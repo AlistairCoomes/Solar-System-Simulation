@@ -42,7 +42,7 @@ int main(){
     shaders.emplace_back("ShaderSources/shader.vs","ShaderSources/FragmentShaders/SunShader.fs");
 
     // Mercury[1] Something wrong
-    bodies.emplace_back(glm::vec3(0.387f,0.0f,0.0f), 0.000166, 0.025f); 
+    bodies.emplace_back(glm::vec3(0.387f,0.0f,0.0f), 0.000000166, 0.025f); 
     shaders.emplace_back("ShaderSources/shader.vs","ShaderSources/FragmentShaders/EarthShader.fs");
 
     // Venus[2]
