@@ -43,7 +43,6 @@ compile_commands.json
 *.dll
 *.so
 *.dylib
-*.lib
 *.a
 *.exp
 
