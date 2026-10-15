@@ -12,9 +12,12 @@ include_directories(
 
 # Executable sources
 add_executable(SolarSystem
-    main.cpp
-    include/glad/glad.c
-    include/SolarSystemHeader/SolarSystem.cpp
+    src/main.cpp
+    src/glad.c
+    src/SolarSystem.cpp
+    src/3DLibraries/camera.cpp 
+    src/3DLibraries/engine.cpp 
+    src/3DLibraries/shader.cpp
 )
 
 add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
