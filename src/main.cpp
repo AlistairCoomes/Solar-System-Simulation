@@ -6,8 +6,6 @@
 
 #include<SolarSystemHeader/SolarSystem.h>
 
-#include <iostream>
-
 
 //--------------------------------------------//
 // Masses in Solar Masses                     //
