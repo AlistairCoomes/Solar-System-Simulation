@@ -116,6 +116,11 @@ void Engine::processInput(){
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS){
        camera.ProcessKeyboard(DOWN, deltaTime);
     }
+    bool LctrlHeld = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
+    int wanted = LctrlHeld ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
+    if (glfwGetKey(window, GLFW_CURSOR) != wanted){
+        glfwSetInputMode(window, GLFW_CURSOR, wanted);
+    }
 }
 
 void Engine::cleanup(){
@@ -136,6 +141,11 @@ void Engine::framebuffer_size_callback(GLFWwindow* window, int width, int height
 void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos){
     
     Engine* engine = reinterpret_cast<Engine*>(glfwGetWindowUserPointer(window));
+
+    if(glfwGetInputMode(window, GLFW_CURSOR) != GLFW_CURSOR_DISABLED){
+        engine -> firstMouse = true;
+        return;
+    }
 
     if (engine) {
         if(engine->firstMouse){
